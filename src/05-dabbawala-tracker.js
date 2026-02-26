@@ -49,5 +49,74 @@
  *   // => { name: "Ram", area: "Dadar", total: 2, completed: 1, pending: 1, successRate: "50.00%" }
  */
 export function createDabbawala(name, area) {
-  // Your code here
+
+  let id = 0;
+  let deliveryItems = []
+
+
+  const addDelivery = (from, to) => {
+
+    if (from == null || from == undefined || from === '' || to == null || to == undefined || to === '') return -1
+
+    id++
+
+    let item = {
+      id,
+      from,
+      to,
+      status: "pending"
+    }
+
+    deliveryItems.push(item)
+
+
+    return id
+  }
+
+  const completeDelivery = (id) => {
+
+    let ret = false
+    const selectedItem = deliveryItems.map(item => {
+      if (item.id === id && item.status === 'pending') {
+        item.status = 'completed'
+        ret = true
+      }
+    })
+    return ret
+  }
+
+  const getActiveDeliveries = () => {
+    const pending = deliveryItems.filter(item => item.status === 'pending')
+    return pending;
+  }
+
+  const reset = () => {
+    id = 0;
+    deliveryItems = []
+    return true
+  }
+
+  const getStats = () => {
+    let successRate
+    const total = deliveryItems.length;
+    const pending = getActiveDeliveries().length
+    const completed = deliveryItems.filter(item => item.status === 'completed').length;
+
+    if (total === 0) successRate = "0.00%"
+    else successRate = (((completed / total) * 100).toFixed(2) + "%")
+
+
+    return { name, area, total: deliveryItems.length, completed, successRate, pending }
+  }
+
+
+
+
+  return {
+    addDelivery,
+    completeDelivery,
+    reset,
+    getActiveDeliveries,
+    getStats
+  }
 }

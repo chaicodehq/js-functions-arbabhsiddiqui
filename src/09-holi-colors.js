@@ -54,21 +54,84 @@
  *   // red and blue objects are UNCHANGED
  */
 export function mixColors(color1, color2) {
-  // Your code here
+
+  if (color1 == null || typeof color1 === 'string' || color2 == null || typeof color2 === 'string') return null
+
+
+  let avgR = Math.round((color1.r + color2.r) / 2)
+  let avgG = Math.round((color1.g + color2.g) / 2)
+  let avgB = Math.round((color1.b + color2.b) / 2)
+
+
+  return {
+    name: `${color1.name}-${color2.name}`,
+    r: avgR,
+    g: avgG,
+    b: avgB
+  }
+
+
 }
 
 export function adjustBrightness(color, factor) {
-  // Your code here
+
+  if (color == null || !Number.isFinite(factor)) return null;
+
+  let avgR = Math.min(Math.round(color.r * factor), 255)
+  let avgG = Math.min(Math.round(color.g * factor), 255)
+  let avgB = Math.min(Math.round(color.b * factor), 255)
+
+  let name = color.name;
+
+  return {
+    name,
+    r: avgR,
+    g: avgG,
+    b: avgB
+  }
 }
 
 export function addToPalette(palette, color) {
-  // Your code here
+
+  if (!Array.isArray(palette)) return [color]
+  if (color == null || typeof color !== 'object') return [...palette]
+
+  return [...palette, color]
+
 }
+
 
 export function removeFromPalette(palette, colorName) {
-  // Your code here
+
+  if (!Array.isArray(palette)) return [];
+
+
+  let result = palette.filter(item => item.name !== colorName)
+
+  return result;
 }
 
+
 export function mergePalettes(palette1, palette2) {
-  // Your code here
+
+  let checkedPalette1 = Array.isArray(palette1) ? palette1 : [];
+  let checkedPalette2 = Array.isArray(palette2) ? palette2 : [];
+
+
+  let result = [...checkedPalette1, ...checkedPalette2]
+
+  let colorSet = new Set()
+
+  let resultArray = []
+
+  result.forEach(item => {
+    if (!colorSet.has(item.name)) {
+      resultArray.push(item)
+      colorSet.add(item.name)
+    }
+  });
+
+  return resultArray
+
 }
+

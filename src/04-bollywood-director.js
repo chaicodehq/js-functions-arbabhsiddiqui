@@ -45,13 +45,93 @@
  *   pricer("gold", true)  // => 200 * 1.5 * 1.3 = 390
  */
 export function createDialogueWriter(genre) {
-  // Your code here
+
+  const allowGenre = ["action", "romance", "comedy", "drama"];
+
+  if (!allowGenre.includes(genre)) return null
+
+  return function (hero, villain) {
+
+    let dialogTemplate;
+
+    if (hero == null || hero == undefined || hero === '' || villain == null || villain == undefined || villain == '') return "..."
+
+
+    switch (genre) {
+      case "action":
+        dialogTemplate = `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+        break;
+      case "romance":
+        dialogTemplate = `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+        break; case "comedy":
+        dialogTemplate = `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+        break; case "drama":
+        dialogTemplate = `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+        break;
+      default:
+        return null;
+    }
+
+    return dialogTemplate
+
+  }
 }
 
 export function createTicketPricer(basePrice) {
-  // Your code here
+
+  if (basePrice <= 0) return null
+
+
+
+
+  return function (seatType, isWeekend = false) {
+
+    let baseMultiplayer = 0;
+    let weekendBase;
+
+
+    switch (seatType) {
+      case "silver":
+        baseMultiplayer = 1
+        break;
+      case "gold":
+        baseMultiplayer = 1.5
+        break;
+      case "platinum":
+        baseMultiplayer = 2
+        break;
+      default:
+        return null
+    }
+
+    weekendBase = isWeekend ? 1.3 : 1;
+
+
+    const total = Math.round(basePrice * baseMultiplayer * weekendBase)
+
+    return total
+  }
+
+
+
+
 }
 
 export function createRatingCalculator(weights) {
-  // Your code here
+
+  if (typeof weights != 'object' || Array.isArray(weights) || weights == null) return null
+  return function (score) {
+    if (typeof score != 'object' || Array.isArray(score)) return null
+
+
+    let total = 0;
+
+    for (let key in score) {
+      total += score[key] * weights[key]
+    }
+
+
+    return total
+  }
 }
+

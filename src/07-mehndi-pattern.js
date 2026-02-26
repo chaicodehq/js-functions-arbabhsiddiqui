@@ -53,21 +53,77 @@
  *   generatePattern(3)        // => ["*", "**", "***", "**", "*"]
  */
 export function repeatChar(char, n) {
-  // Your code here
+
+  if (char == '' || typeof char !== 'string') return ''
+
+  if (n <= 0) {
+    return ''
+  } else {
+    return char + repeatChar(char, n - 1)
+  }
 }
 
+
 export function sumNestedArray(arr) {
-  // Your code here
+
+  if (!Array.isArray(arr) || arr.length === 0) return 0
+
+
+  const [first, ...rest] = arr;
+  let res = typeof first === 'number' ? first : sumNestedArray(first)
+
+  return res + sumNestedArray(rest)
+
+
 }
+
 
 export function flattenArray(arr) {
   // Your code here
+  if (!Array.isArray(arr) || arr.length === 0) return []
+
+  const [first, ...rest] = arr;
+
+  if (Array.isArray(first)) {
+    return [...flattenArray(first), ...flattenArray(rest)]
+  }
+
+  return [first, ...flattenArray(rest)]
 }
 
 export function isPalindrome(str) {
-  // Your code here
+
+
+  if (typeof str !== 'string') return false;
+
+
+  str = str.toLowerCase();
+
+  if (str.length <= 1) return true;
+  if (str[0] !== str[str.length - 1]) return false
+
+  return isPalindrome(str.slice(1, - 1))
 }
 
 export function generatePattern(n) {
-  // Your code here
+
+
+  if (!Number.isInteger(n) || n <= 0) return [];
+
+
+  let count = (i) => {
+
+    if (i === 1) return ["*"];
+
+    const prev = count(i - 1);
+    return [...prev, "*".repeat(i)]
+  }
+
+  const asc = count(n)
+  const desc = asc.slice(0, -1).reverse();
+
+
+  return [...asc, ...desc]
+
+
 }
